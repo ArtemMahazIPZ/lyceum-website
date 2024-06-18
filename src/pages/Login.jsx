@@ -20,7 +20,7 @@ const Login = () => {
                 <form className="form login_form">
                     <p className="form_error-message">Повідомлення про помилку</p>
                     <input type="text" placeholder='Email' name='email' value={userData.email}
-                           onChange={changeInputHandler}/>
+                           onChange={changeInputHandler} autoFocus/>
                     <input type="password" placeholder='Пароль' name='password' value={userData.password}
                            onChange={changeInputHandler}/>
                     <button type="submit" className="btn primary">Увійти</button>
