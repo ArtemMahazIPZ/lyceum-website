@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../lyceumimages/logo.jpg';
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+import UserContext from "../context/userContext";
 
 const Header = () => {
-    const [isNavShowing, setIsNavShowing] = useState(false);
+    const [isNavShowing, setIsNavShowing] = useState(window.innerWidth > 800);
+    const { currentUser } = useContext(UserContext);
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 800) {
-                setIsNavShowing(true);
-            } else {
-                setIsNavShowing(false);
-            }
+            setIsNavShowing(window.innerWidth > 800);
         };
 
         window.addEventListener('resize', handleResize);
-
-        handleResize();
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const closeNavHandler = () => {
-        setIsNavShowing(false);
+        if (window.innerWidth <= 800) {
+            setIsNavShowing(false);
+        }
     };
 
     return (
@@ -33,12 +31,18 @@ const Header = () => {
                 <Link to="/" className="nav_logo" onClick={closeNavHandler}>
                     <img src={Logo} alt="Navbar Logo" />
                 </Link>
-                {isNavShowing && (
-                    <ul className="nav_menu">
-                        <li><Link to="/profile/sdfsdf" onClick={closeNavHandler}>Ernest Achiever</Link></li>
-                        <li><Link to="/create" onClick={closeNavHandler}>Create Post</Link></li>
-                        <li><Link to="/authors" onClick={closeNavHandler}>Authors</Link></li>
-                        <li><Link to="/logout" onClick={closeNavHandler}>Logout</Link></li>
+                {currentUser?.id && (
+                    <ul className={`nav_menu ${isNavShowing ? 'show' : ''}`}>
+                        <li><Link to={`/profile/${currentUser.id}`} onClick={closeNavHandler}>{currentUser.name}</Link></li>
+                        <li><Link to="/create" onClick={closeNavHandler}>Створити новину</Link></li>
+                        <li><Link to="/authors" onClick={closeNavHandler}>Автори</Link></li>
+                        <li><Link to="/logout" onClick={closeNavHandler}>Вийти</Link></li>
+                    </ul>
+                )}
+                {!currentUser?.id && (
+                    <ul className={`nav_menu ${isNavShowing ? 'show' : ''}`}>
+                        <li><Link to="/authors" onClick={closeNavHandler}>Автори</Link></li>
+                        <li><Link to="/login" onClick={closeNavHandler}>Увійти</Link></li>
                     </ul>
                 )}
                 <button className="nav_toggle-btn" onClick={() => setIsNavShowing(!isNavShowing)}>

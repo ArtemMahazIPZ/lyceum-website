@@ -542,21 +542,45 @@ textarea {
     .nav_container{
         position: relative;
     }
-    .nav_menu{
-        position: absolute;
-        top: 5rem;
-        right: 0;
+    .nav_menu {
+        display: flex;
         flex-direction: column;
-        gap: 0;
-    }
-    .nav_menu li{
+        gap: 1rem;
+        padding: 0;
+        list-style: none;
+        background-color: #fff;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        position: absolute;
+        top: 100%;
+        left: 0;
         width: 100%;
-        box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26);
-        animation: dropDown 500ms ease forwards;
-        opacity: 0;
-        transform: rotate(90deg);
-        transform-origin: top;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
     }
+
+    .nav_menu.show {
+        max-height: 30rem; /* Підлаштуйте висоту, що вам підходить */
+    }
+
+    .nav_menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav_menu li a {
+        display: block;
+        padding: 1rem;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav_menu li a:hover {
+        background-color: #f0f0f0;
+    }
+
+
     @keyframes dropDown {
         to {
             opacity: 1;
